@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Students {
@@ -23,6 +24,14 @@ public class Students {
             return s;
         } catch (FileNotFoundException e){
             return  new ArrayList<String>();
+        }
+    }
+
+    public void setPresentByWholeName(String wname, boolean isPresent){
+        for(Student s: studentObjs){
+            if((s.getFirstName() + " " + s.getLastName()).equals(wname)){
+                s.isPresent = isPresent;
+            }
         }
     }
 
@@ -73,15 +82,63 @@ public class Students {
         return present;
     }
 
+    public void setALl(boolean isPresent){
+        for(Student s : this.studentObjs){
+            if(isPresent){
+                s.isPresent = true;
+            } else {
+                s.isPresent = false;
+            }
+        }
+    }
+
+    private void setAllAvailable(){
+        for(Student s : this.studentObjs){
+            s.called = false;
+        }
+    }
+
     public ArrayList<Student> getAbsent(){
         ArrayList<Student> absent = new ArrayList<Student>();
         for(Student s : this.studentObjs){
-            if(s.isPresent){
-
-            } else {
+            if(!s.isPresent) {
                 absent.add(s);
             }
         }
         return absent;
+    }
+
+    public int getNumAbsent(){
+        ArrayList<Student> ab = getAbsent();
+        return ab.size();
+    }
+
+    public int getNumPresent(){
+        ArrayList<Student> pre = getPresent();
+        return pre.size();
+    }
+
+    public String getNextPopsicle(){
+        ArrayList<Student> available = new ArrayList<Student>();
+        while((available.size()<1) && (this.getPresent().size()>0)){
+            for(Student s : this.studentObjs) {
+                if (s.isPresent == true) {
+                    if (s.called == false) {
+                        available.add(s);
+                    }
+                }
+            }
+            if(available.size()<1){
+                this.setAllAvailable();
+            }
+        }
+        if(available.size()>0){
+            Random rand = new Random();
+            int index = rand.nextInt(available.size());
+            available.get(index).setCalled(true);
+            return available.get(index).getWholeName();
+        } else {
+            return "No students available";
+        }
     }
 }
