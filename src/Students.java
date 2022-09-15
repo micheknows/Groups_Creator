@@ -1,80 +1,31 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Random;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Students {
-    private static ArrayList<Student> studentObjs = new ArrayList<Student>();
+    static ArrayList<Student> students;
 
-    public ArrayList<String> loadStudents(){
-        try{
-            ArrayList<String> s = new ArrayList<String>();
-            File myObj = new File("students.txt");
-            Scanner myReader = new Scanner(myObj);
-            studentObjs = new ArrayList<Student>();
-            while(myReader.hasNextLine()){
-                String data = myReader.nextLine();
-                s.add(data);
-                this.studentObjs.add(new Student(data));
-            }
-            myReader.close();
-            return s;
-        } catch (FileNotFoundException e){
-            return  new ArrayList<String>();
-        }
+    public Students(){
+        this.loadStudents();
     }
 
-    public void setPresentByWholeName(String wname, boolean isPresent){
-        for(Student s: studentObjs){
-            if((s.getFirstName() + " " + s.getLastName()).equals(wname)){
-                s.isPresent = isPresent;
-            }
+    static ArrayList<String> getWholeNameFromStudents(ArrayList<Student> students){
+        ArrayList<String> names = new ArrayList<String>();
+        for(Student s : students){
+            names.add(s.getFirstName() + " " + s.getLastName());
         }
+        return names;
     }
 
-    private ArrayList<String> getnames() {
-        ArrayList<String> s = new ArrayList<String>();
-        if (this.studentObjs.size()>0) {
-            for (Student student : this.studentObjs) {
-                s.add(student.getFirstName() + " " + student.getLastName());
-            }
-        }
-        return s;
-
+    public ArrayList<String> getWholeNameFromStudents(){
+        return getWholeNameFromStudents(this.students);
     }
 
-
-    public ArrayList<String> getnames(ArrayList<Student> students) {
-        ArrayList<String> s = new ArrayList<String>();
-        if (students.size()>0) {
-            for (Student student : students) {
-                s.add(student.getFirstName() + " " + student.getLastName());
-            }
-        }
-        return s;
-
-    }
-
-    public void saveStudents(){
-        try{
-            ArrayList<String> tempStudents = this.getnames();
-            FileWriter myWriter = new FileWriter("students.txt");
-            for (String s : tempStudents){
-                myWriter.write(s);
-                myWriter.close();
-            }
-        } catch(IOException e){
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<Student> getPresent(){
+    public ArrayList<Student> getPresentStudents(){
         ArrayList<Student> present = new ArrayList<Student>();
-        for(Student s : this.studentObjs){
+        for(Student s : this.students){
             if(s.isPresent){
                 present.add(s);
             }
@@ -82,63 +33,68 @@ public class Students {
         return present;
     }
 
-    public void setALl(boolean isPresent){
-        for(Student s : this.studentObjs){
-            if(isPresent){
-                s.isPresent = true;
-            } else {
+    public void markAllPresent(){
+        for(Student s : this.students){
+            s.isPresent = true;
+        }
+    }
+
+    public void markALlAbsent(){
+        for(Student s: this.students){
+            s.isPresent = false;
+        }
+    }
+
+    public void markAbsent(String name){
+        for(Student s: this.students){
+            if((s.getFirstName() + " " + s.getLastName()).equals(name)){
                 s.isPresent = false;
             }
         }
     }
 
-    private void setAllAvailable(){
-        for(Student s : this.studentObjs){
-            s.called = false;
+
+    public void markPresent(String name){
+        for(Student s: this.students){
+            if((s.getFirstName() + " " + s.getLastName()).equals(name)){
+                s.isPresent = true;
+            }
         }
     }
 
-    public ArrayList<Student> getAbsent(){
+    @Override
+    public String toString(){
+        String text="";
+        for(Student s : this.students){
+            text += "\n" + s.getWholeName() + ":  isPresent = " + s.isPresent;
+        }
+        return text;
+    }
+
+    public ArrayList<Student> getAbsentStudents(){
         ArrayList<Student> absent = new ArrayList<Student>();
-        for(Student s : this.studentObjs){
-            if(!s.isPresent) {
+        for(Student s : this.students){
+            if(!s.isPresent){
                 absent.add(s);
             }
         }
         return absent;
     }
 
-    public int getNumAbsent(){
-        ArrayList<Student> ab = getAbsent();
-        return ab.size();
-    }
-
-    public int getNumPresent(){
-        ArrayList<Student> pre = getPresent();
-        return pre.size();
-    }
-
-    public String getNextPopsicle(){
-        ArrayList<Student> available = new ArrayList<Student>();
-        while((available.size()<1) && (this.getPresent().size()>0)){
-            for(Student s : this.studentObjs) {
-                if (s.isPresent == true) {
-                    if (s.called == false) {
-                        available.add(s);
-                    }
-                }
+    private void loadStudents(){
+        this.students = new ArrayList<Student>();
+        try {
+            File myObj = new File("students.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                students.add(new Student(data));
             }
-            if(available.size()<1){
-                this.setAllAvailable();
-            }
-        }
-        if(available.size()>0){
-            Random rand = new Random();
-            int index = rand.nextInt(available.size());
-            available.get(index).setCalled(true);
-            return available.get(index).getWholeName();
-        } else {
-            return "No students available";
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
+
 }
