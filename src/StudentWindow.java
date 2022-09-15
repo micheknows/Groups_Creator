@@ -9,6 +9,10 @@ public class StudentWindow extends JFrame {
     Container eastside;
     ScrollingList presentStudents;
     ScrollingList absentStudents;
+    Buttons popsicleBtn;
+    Buttons buddytalkBtn;
+    Buttons groupBtn;
+    Buttons clearBtn;
 
     Students myStudents;
 
@@ -25,6 +29,14 @@ public class StudentWindow extends JFrame {
 
         // NORTHSIDE  holds buttons for pop, buddy talk, groups, etc
         northside = new Container(new FlowLayout());
+            // add navigation buttons
+        popsicleBtn = new Buttons(new ImageIcon("pop2.jpg"), "popsicle", this.myStudents, this);
+        northside.add(popsicleBtn);
+
+
+        clearBtn = new Buttons(new ImageIcon("clear.jpg"), "clear", this.myStudents, this);
+        northside.add(clearBtn);
+
 
         this.add(northside,BorderLayout.NORTH);
 
