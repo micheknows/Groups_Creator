@@ -29,10 +29,14 @@ public class PopsicleSticks {
     }
 
     private JLabel createPSwindow() {
-        JLabel text = new JLabel(this.getNextPopsicleStick());
-        text.setFont(new Font("Serif", Font.BOLD, 125));
-        text.setHorizontalTextPosition(JLabel.CENTER);
-        text.setForeground(Color.BLUE);
+
+            JLabel text = new JLabel(this.getNextPopsicleStick());
+            text.setIcon(new ImageIcon("onestick.png"));
+            text.setFont(new Font("Serif", Font.BOLD, 45));
+            text.setHorizontalTextPosition(JLabel.CENTER);
+            text.setHorizontalTextPosition(JLabel.CENTER);
+            text.setVerticalTextPosition(JLabel.CENTER);
+            text.setForeground(Color.BLACK);
         return text;
     }
 
