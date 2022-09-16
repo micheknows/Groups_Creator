@@ -3,32 +3,42 @@ import java.awt.*;
 
 public class Buttons extends JButton {
 
-    public Buttons(){
+    public static BuddyTalks bt;
+    private static Students students;
+    private static StudentWindow sw;
+
+    public Buttons(Students students, StudentWindow sw){
         super();
+        this.students = students;
+        this.sw = sw;
+        this.bt = new BuddyTalks(students, sw);
     }
 
     // tool buttons with image
-    public Buttons(Icon icon, String cmd, Students students, StudentWindow sw){
+    public Buttons(Icon icon, String cmd, String tooltip){
         super(icon);
+        this.setToolTipText(tooltip);
         switch (cmd){
             case "popsicle":
-                this.addActionListener(e -> this.popsicle(students, sw));
+                this.addActionListener(e -> new PopsicleSticks(students, sw));
+                break;
+            case "buddy":
+                this.addActionListener(e -> this.bt.doBuddyTalk());
                 break;
             case "clear":
-                this.addActionListener(e -> this.clear(students, sw));
+                this.addActionListener(e -> this.clear());
                 break;
         }
     }
 
-    public void popsicle(Students students, StudentWindow sw) {
-        System.out.println("popsicle");
-    }
-    public void clear(Students students, StudentWindow sw) {
-        System.out.println("clear");
+    public void clear() {
+        sw.centerside.removeAll();
+        sw.centerside.validate();
+        sw.centerside.repaint();
     }
 
     // attendance buttons with text
-    public Buttons(String text, String cmd, Students students, StudentWindow sw){
+    public Buttons(String text, String cmd){
         super(text);
         switch (cmd){
             case "allAbsent":

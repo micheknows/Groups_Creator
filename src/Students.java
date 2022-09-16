@@ -45,6 +45,23 @@ public class Students {
         }
     }
 
+
+    public void markALlNotCalled(){
+        for(Student s: this.students){
+            s.called = false;
+        }
+    }
+
+    public void markCalledByFullName(String name){
+        for(Student s: this.students){
+            if((s.getFirstName() + " " + s.getLastName()).equals(name)) {
+                s.called = true;
+            }
+        }
+
+    }
+
+
     public void markAbsent(String name){
         for(Student s: this.students){
             if((s.getFirstName() + " " + s.getLastName()).equals(name)){

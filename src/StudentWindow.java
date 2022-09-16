@@ -15,6 +15,7 @@ public class StudentWindow extends JFrame {
     Buttons clearBtn;
 
     Students myStudents;
+    BuddyTalks bt;
 
     public  StudentWindow() {
         super("Groups Creator");
@@ -24,18 +25,24 @@ public class StudentWindow extends JFrame {
         this.setLayout(new BorderLayout());
 
         myStudents = new Students();
+        Buttons b = new Buttons(myStudents, this);
+        this.bt = b.bt;
 
-
+        this.setJMenuBar(new Menus(this.bt));
 
         // NORTHSIDE  holds buttons for pop, buddy talk, groups, etc
         northside = new Container(new FlowLayout());
+
             // add navigation buttons
-        popsicleBtn = new Buttons(new ImageIcon("pop2.jpg"), "popsicle", this.myStudents, this);
-        northside.add(popsicleBtn);
+                popsicleBtn = new Buttons(new ImageIcon("pop2.jpg"), "popsicle", "Click to pull the next popsicle stick");
+                northside.add(popsicleBtn);
+
+                buddytalkBtn = new Buttons(new ImageIcon("pbj.png"), "buddy", "Click to create Buddy Talk pairs");
+                northside.add(buddytalkBtn);
 
 
-        clearBtn = new Buttons(new ImageIcon("clear.jpg"), "clear", this.myStudents, this);
-        northside.add(clearBtn);
+                clearBtn = new Buttons(new ImageIcon("clear.jpg"), "clear", "Click to clear the display area");
+                northside.add(clearBtn);
 
 
         this.add(northside,BorderLayout.NORTH);
@@ -46,18 +53,18 @@ public class StudentWindow extends JFrame {
             // Create the present students
             presentStudents = new ScrollingList(this.myStudents.getPresentStudents(), "Present", this.myStudents.getPresentStudents().size());
             westside.add(presentStudents);
-            Buttons allAbsentBtn = new Buttons("Mark All Absent", "allAbsent", this.myStudents, this);
+            Buttons allAbsentBtn = new Buttons("Mark All Absent", "allAbsent");
             westside.add(allAbsentBtn);
-            Buttons selectedAbsentBtn = new Buttons("Mark Selected Absent", "selectedAbsent", this.myStudents, this);
+            Buttons selectedAbsentBtn = new Buttons("Mark Selected Absent", "selectedAbsent");
             westside.add(selectedAbsentBtn);
 
 
             // Create the absent students
             absentStudents = new ScrollingList(this.myStudents.getAbsentStudents(), "Absent", this.myStudents.getAbsentStudents().size());
             westside.add(absentStudents);
-            Buttons allPresentBtn = new Buttons("Mark All Present", "allPresent", this.myStudents, this);
+            Buttons allPresentBtn = new Buttons("Mark All Present", "allPresent");
             westside.add(allPresentBtn);
-            Buttons selectedPresentBtn = new Buttons("Mark Selected Present", "selectedPresent", this.myStudents, this);
+            Buttons selectedPresentBtn = new Buttons("Mark Selected Present", "selectedPresent");
             westside.add(selectedPresentBtn);
 
         this.add(westside,BorderLayout.WEST);
