@@ -28,7 +28,7 @@ public class StudentWindow extends JFrame {
         Buttons b = new Buttons(myStudents, this);
         this.bt = b.bt;
 
-        this.setJMenuBar(new Menus(this.bt));
+        this.setJMenuBar(new Menus(this.bt, this));
 
         // NORTHSIDE  holds buttons for pop, buddy talk, groups, etc
         northside = new Container(new FlowLayout());

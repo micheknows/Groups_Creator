@@ -1,6 +1,4 @@
 Student 1
-Somebiglongname Yellowhair
-Michelle Rogers
 Student 2
 Student 3
 Student 4

@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -6,10 +7,25 @@ import java.awt.event.KeyEvent;
 public class Menus extends JMenuBar implements ActionListener {
 
     JMenu btmenu;
-    BuddyTalks bt;
+    JMenu winmenu;
+    JMenu displaymenu;
 
-    public Menus(BuddyTalks bt){
+    BuddyTalks bt;
+    StudentWindow sw;
+    JMenuItem showstudentssubmenu;
+    JMenuItem showdisplaysubmenu;
+
+    Boolean studentview;
+    Boolean displayview;
+
+    public Menus(BuddyTalks bt, StudentWindow sw){
         this.bt = bt;
+        this.sw = sw;
+
+        studentview = true;
+        displayview = true;
+
+        // BUddy Talk Menu
         btmenu = new JMenu("Buddy Talk");
         btmenu.setMnemonic(KeyEvent.VK_B);
         this.add(btmenu);
@@ -39,6 +55,36 @@ public class Menus extends JMenuBar implements ActionListener {
         chipsandsalsa.addActionListener(this);
         headerssubmenu.add(chipsandsalsa);
 
+        // Windows View Menu
+
+        winmenu = new JMenu("Window View");
+        winmenu.setMnemonic(KeyEvent.VK_W);
+        this.add(winmenu);
+
+        String text;
+        if(studentview){
+            text = "Hide Students";
+        } else {
+            text = "Show Students";
+        }
+
+        showstudentssubmenu = new JMenuItem(text);
+        showstudentssubmenu.setMnemonic(KeyEvent.VK_S);
+        showstudentssubmenu.addActionListener(this);
+        winmenu.add(showstudentssubmenu);
+
+
+        if(displayview){
+            text = "Hide Display Area";
+        } else {
+            text = "Show Display Area";
+        }
+
+        showdisplaysubmenu = new JMenuItem(text);
+        showdisplaysubmenu.setMnemonic(KeyEvent.VK_S);
+        showdisplaysubmenu.addActionListener(this);
+        winmenu.add(showdisplaysubmenu);
+
 
     }
 
@@ -55,6 +101,38 @@ public class Menus extends JMenuBar implements ActionListener {
                 break;
             case "Chips and Salsa":
                 this.bt.setPairs("salsa");
+                break;
+            case "Hide Students":
+                sw.westside.setVisible(false);
+                showstudentssubmenu.setText("Show Students");
+                sw.setSize(new Dimension(sw.getWidth()-400,sw.getHeight()));
+                sw.validate();
+                sw.repaint();
+                studentview = false;
+                break;
+            case "Show Students":
+                sw.westside.setVisible(true);
+                showstudentssubmenu.setText("Hide Students");
+                sw.setSize(new Dimension(sw.getWidth()+400,sw.getHeight()));
+                studentview = true;
+                sw.validate();
+                sw.repaint();
+                break;
+            case "Hide Display Area":
+                sw.centerside.setVisible(false);
+                showdisplaysubmenu.setText("Show Display Area");
+                sw.setSize(new Dimension(sw.getWidth()-600,sw.getHeight()));
+                sw.validate();
+                sw.repaint();
+                displayview = false;
+                break;
+            case "Show Display Area":
+                sw.centerside.setVisible(true);
+                showdisplaysubmenu.setText("Hide Display Area");
+                sw.setSize(new Dimension(sw.getWidth()+600,sw.getHeight()));
+                displayview = true;
+                sw.validate();
+                sw.repaint();
                 break;
         }
     }
