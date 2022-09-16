@@ -14,9 +14,11 @@ public class Menus extends JMenuBar implements ActionListener {
     StudentWindow sw;
     JMenuItem showstudentssubmenu;
     JMenuItem showdisplaysubmenu;
+    JMenuItem alwaystopsubmenu;
 
     Boolean studentview;
     Boolean displayview;
+    Boolean alwaystop;
 
     public Menus(BuddyTalks bt, StudentWindow sw){
         this.bt = bt;
@@ -24,6 +26,7 @@ public class Menus extends JMenuBar implements ActionListener {
 
         studentview = true;
         displayview = true;
+        alwaystop = false;
 
         // BUddy Talk Menu
         btmenu = new JMenu("Buddy Talk");
@@ -62,6 +65,18 @@ public class Menus extends JMenuBar implements ActionListener {
         this.add(winmenu);
 
         String text;
+        if(alwaystop){
+            text = "Cancel Always on Top";
+        } else {
+            text = "Make Always on Top";
+        }
+
+        alwaystopsubmenu = new JMenuItem(text);
+        alwaystopsubmenu.setMnemonic(KeyEvent.VK_T);
+        alwaystopsubmenu.addActionListener(this);
+        winmenu.add(alwaystopsubmenu);
+
+
         if(studentview){
             text = "Hide Students";
         } else {
@@ -118,12 +133,20 @@ public class Menus extends JMenuBar implements ActionListener {
                 sw.validate();
                 sw.repaint();
                 break;
+            case "Cancel Always On Top":
+                alwaystop = false;
+                sw.setAlwaysOnTop(false);
+                alwaystopsubmenu.setText("Make Always On Top");
+                break;
+            case "Make Always on Top":
+                alwaystop = true;
+                sw.setAlwaysOnTop(true);
+                alwaystopsubmenu.setText("Cancel Always On Top");
+                break;
             case "Hide Display Area":
                 sw.centerside.setVisible(false);
                 showdisplaysubmenu.setText("Show Display Area");
                 sw.setSize(new Dimension(sw.getWidth()-600,sw.getHeight()));
-                sw.validate();
-                sw.repaint();
                 displayview = false;
                 break;
             case "Show Display Area":
@@ -135,5 +158,8 @@ public class Menus extends JMenuBar implements ActionListener {
                 sw.repaint();
                 break;
         }
+
+        sw.validate();
+        sw.repaint();
     }
 }
