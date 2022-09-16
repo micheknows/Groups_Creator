@@ -19,7 +19,7 @@ public class StudentWindow extends JFrame {
 
     public  StudentWindow() {
         super("Groups Creator");
-        this.setPreferredSize(new Dimension(1200,800));
+        this.setPreferredSize(new Dimension(1400,800));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
@@ -76,6 +76,8 @@ public class StudentWindow extends JFrame {
         // EASTSIDE holds the timer functionality
         eastside = new Container();
         eastside.setLayout(new BoxLayout(eastside, BoxLayout.PAGE_AXIS));
+        eastside.add(new Timers(this));
+        eastside.setBackground(Color.WHITE);
         this.add(eastside, BorderLayout.EAST);
 
         this.pack();
